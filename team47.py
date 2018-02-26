@@ -59,8 +59,8 @@ class Team47():
         self.depthlimit = 2
         self.good_terminal = False
         self.start = 0
-        self.max_time = 1
-        self.utilwts = [6000, 0, 0, 0, 0, 1500, -1500, 1500, -1500, 710000, -750000, 710000, -750000, 920000, -900000, -10000, 4000, 100000, -100000, 100000, -100000, 130000, -130000]
+        self.max_time = 2
+        self.utilwts = [6000, 0, 0, 0, 0, 1500, -1500, 1500, -1500, 710000, -750000, 710000, -750000, 920000, -950000, -10000, 4000, 100000, -100000, 100000, -100000, 130000, -130000]
 
     def blocks_allowed(self, old_move, blocks_state):
 
@@ -186,10 +186,15 @@ class Team47():
         rowlost = []
         columnwon = []
         columnlost = []
-        diagleftwon = []
-        diagleftlost = []
-        diagrightwon = []
-        diagrightlost = []
+        diamond1won = []
+        diamond1lost = []
+        diamond2won = []
+        diamond2lost = []
+        diamond3won = []
+        diamond3lost = []
+        diamond4won = []
+        diamond4lost = []
+
         count = countlost = 0
         for i in [0, 1, 2, 3]:
             if blocks_state[i] == flag:
@@ -263,22 +268,41 @@ class Team47():
         columnlost.append(countlost)
         count = 0
         countlost = 0
-        for i in [0, 5, 10, 15]:
+
+        for i in [1, 4, 9, 6]:
             if blocks_state[i] == flag:
                 count += 1
             if blocks_state[i] == counterflag:
                 countlost += 1
-        diagleftwon.append(count)
-        diagleftlost.append(countlost)
+        diamond1won.append(count)
+        diamond1lost.append(countlost)
         count = 0
         countlost = 0
-        for i in [3, 6, 9, 12]:
+        for i in [2, 5, 10, 7]:
             if blocks_state[i] == flag:
                 count += 1
             if blocks_state[i] == counterflag:
                 countlost += 1
-        diagrightwon.append(count)
-        diagrightlost.append(countlost)
+        diamond2won.append(count)
+        diamond2lost.append(countlost)
+        count = 0
+        countlost = 0
+        for i in [5, 8, 13, 10]:
+            if blocks_state[i] == flag:
+                count += 1
+            if blocks_state[i] == counterflag:
+                countlost += 1
+        diamond3won.append(count)
+        diamond3lost.append(countlost)
+        count = 0
+        countlost = 0
+        for i in [6, 9, 14, 11]:
+            if blocks_state[i] == flag:
+                count += 1
+            if blocks_state[i] == counterflag:
+                countlost += 1
+        diamond4won.append(count)
+        diamond4lost.append(countlost)
         count = 0
         countlost = 0
 
@@ -297,10 +321,16 @@ class Team47():
             if columnlost[i] == 0:
                 freedom += 1
 
-        if diagleftlost[0] == 0:
+        if diamond1lost[0] == 0:
             freedom += 1
 
-        if diagrightlost[0] == 0:
+        if diamond2lost[0] == 0:
+            freedom += 1
+
+        if diamond3lost[0] == 0:
+            freedom += 1
+
+        if diamond4lost[0] == 0:
             freedom += 1
 
         """Cell statistics"""
@@ -314,10 +344,11 @@ class Team47():
         cellrowlost = []
         cellcolumnwin = []
         cellcolumnlost = []
-        celldiagleftwon = []
-        celldiagleftlost = []
-        celldiagrightwon = []
-        celldiagrightlost = []
+
+        celldiamond1won = []
+        celldiamond1lost = []
+        celldiamond2won = []
+        celldiamond2lost = []
         count = countlost = 0
 
         for i in xrange(4):
@@ -342,23 +373,47 @@ class Team47():
             count = 0
             countlost = 0
 
-        for i in xrange(4):
-            if board[rowcorner + i][columncorner + i] == flag:
+        for i in xrange(2):
+            if board[rowcorner + 0][columncorner + 1 + i] == flag:
                 count += 1
-            if board[rowcorner + i][columncorner + i] == counterflag:
+            if board[rowcorner + 1][columncorner + 0 + i] == flag:
+                count += 1
+            if board[rowcorner + 1][columncorner + 2 + i] == flag:
+                count += 1
+            if board[rowcorner + 2][columncorner + 1 + i] == flag:
+                count += 1
+            if board[rowcorner + 0][columncorner + 1 + i] == counterflag:
                 countlost += 1
-        celldiagleftwon.append(count)
-        celldiagleftlost.append(countlost)
+            if board[rowcorner + 1][columncorner + 0 + i] == counterflag:
+                countlost += 1
+            if board[rowcorner + 1][columncorner + 2 + i] == counterflag:
+                countlost += 1
+            if board[rowcorner + 2][columncorner + 1 + i] == counterflag:
+                countlost += 1
+        celldiamond1won.append(count)
+        celldiamond1lost.append(countlost)
         count = 0
         countlost = 0
 
-        for i in xrange(4):
-            if board[rowcorner + 3 - i][columncorner + i] == flag:
+        for i in xrange(2):
+            if board[rowcorner + 1][columncorner + 1 + i] == flag:
                 count += 1
-            if board[rowcorner + 3 - i][columncorner + i] == counterflag:
+            if board[rowcorner + 2][columncorner + 0 + i] == flag:
+                count += 1
+            if board[rowcorner + 2][columncorner + 2 + i] == flag:
+                count += 1
+            if board[rowcorner + 3][columncorner + 1 + i] == flag:
+                count += 1
+            if board[rowcorner + 1][columncorner + 1 + i] == counterflag:
                 countlost += 1
-        celldiagrightwon.append(count)
-        celldiagrightlost.append(countlost)
+            if board[rowcorner + 2][columncorner + 0 + i] == counterflag:
+                countlost += 1
+            if board[rowcorner + 2][columncorner + 2 + i] == counterflag:
+                countlost += 1
+            if board[rowcorner + 3][columncorner + 1 + i] == counterflag:
+                countlost += 1
+        celldiamond2won.append(count)
+        celldiamond2lost.append(countlost)
         count = 0
         countlost = 0
 
@@ -366,10 +421,10 @@ class Team47():
         totalcellrowlost = []
         totalcellcolumnwin = []
         totalcellcolumnlost = []
-        totalcelldiagleftwon = []
-        totalcelldiagleftlost = []
-        totalcelldiagrightwon = []
-        totalcelldiagrightlost = []
+        totalcelldiamond1won = []
+        totalcelldiamond1lost = []
+        totalcelldiamond2won = []
+        totalcelldiamond2lost = []
         totalcount = totalcountlost = 0
 
         for i in xrange(16):
@@ -400,23 +455,47 @@ class Team47():
                 totalcount = 0
                 totalcountlost = 0
 
-            for i in xrange(4):
-                if board[rowcorner + i][columncorner + i] == flag:
+            for i in xrange(2):
+                if board[rowcorner + 0][columncorner + 1 + i] == flag:
                     totalcount += 1
-                if board[rowcorner + i][columncorner + i] == counterflag:
+                if board[rowcorner + 1][columncorner + 0 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 1][columncorner + 2 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 2][columncorner + 1 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 0][columncorner + 1 + i] == counterflag:
                     totalcountlost += 1
-            totalcelldiagleftwon.append(totalcount)
-            totalcelldiagleftlost.append(totalcountlost)
+                if board[rowcorner + 1][columncorner + 0 + i] == counterflag:
+                    totalcountlost += 1
+                if board[rowcorner + 1][columncorner + 2 + i] == counterflag:
+                    totalcountlost += 1
+                if board[rowcorner + 2][columncorner + 1 + i] == counterflag:
+                    totalcountlost += 1
+            totalcelldiamond1won.append(count)
+            totalcelldiamond1lost.append(countlost)
             totalcount = 0
             totalcountlost = 0
 
-            for i in xrange(4):
-                if board[rowcorner + 3 - i][columncorner + i] == flag:
+            for i in xrange(2):
+                if board[rowcorner + 1][columncorner + 1 + i] == flag:
                     totalcount += 1
-                if board[rowcorner + 3 - i][columncorner + i] == counterflag:
+                if board[rowcorner + 2][columncorner + 0 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 2][columncorner + 2 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 3][columncorner + 1 + i] == flag:
+                    totalcount += 1
+                if board[rowcorner + 1][columncorner + 1 + i] == counterflag:
                     totalcountlost += 1
-            totalcelldiagrightwon.append(totalcount)
-            totalcelldiagrightlost.append(totalcountlost)
+                if board[rowcorner + 2][columncorner + 0 + i] == counterflag:
+                    totalcountlost += 1
+                if board[rowcorner + 2][columncorner + 2 + i] == counterflag:
+                    totalcountlost += 1
+                if board[rowcorner + 3][columncorner + 1 + i] == counterflag:
+                    totalcountlost += 1
+            totalcelldiamond2won.append(count)
+            totalcelldiamond2lost.append(countlost)
             totalcount = 0
             totalcountlost = 0
 
@@ -435,8 +514,8 @@ class Team47():
         x11 = (rowlost[0] * rowlost[0] * rowlost[0]+ rowlost[1] * rowlost[1] * rowlost[1] + rowlost[2] * rowlost[2] * rowlost[2] + rowlost[3] * rowlost[3] * rowlost[3]) / 81.0
         x12 = (columnwon[0] * columnwon[0] * columnwon[0] + columnwon[1] * columnwon[1] * columnwon[1] + columnwon[2] * columnwon[2] * columnwon[2] + columnwon[3] * columnwon[3] * columnwon[3]) / 81.0
         x13 = (columnlost[0] * columnlost[0] * columnlost[0] + columnlost[1] * columnlost[1] * columnlost[1] + columnlost[2] * columnlost[2] * columnlost[2] + columnlost[3] * columnlost[3] * columnlost[3]) / 81.0
-        x14 = (diagleftwon[0] * diagleftwon[0] * diagleftwon[0] + diagrightwon[0] * diagrightwon[0] * diagrightwon[0]) / 50 #4
-        x15 = (diagleftlost[0] * diagleftlost[0] * diagleftlost[0]+ diagrightlost[0] * diagrightlost[0] * diagrightlost[0]) / 50 #-4
+        x14 = (diamond1won[0]**3 + diamond2won[0]**3 + diamond3won[0]**3 + diamond4won[0]**3) / 50 #4
+        x15 = (diamond1lost[0]**3 + diamond2won[0]**3 + diamond3won[0]**3 + diamond4won[0]**3) / 50 #-4
 
         x16 = freemove #-15
         x17 = (freedom) / 10.0 #0.1 -> 1
@@ -445,9 +524,10 @@ class Team47():
         x19 = (sum([x * x for x in cellrowlost])+ sum([x * x for x in totalcellrowlost])) / (27.0 * 16.0)
         x20 = (sum([x * x for x in cellcolumnwin])+ sum([x * x for x in totalcellcolumnwin])) / (27.0 * 16.0)
         x21 = (sum([x * x for x in cellcolumnlost])+ sum([x * x for x in totalcellcolumnlost])) / (27.0 * 16.0)
-        x22 = ( sum([x * x for x in celldiagleftwon])+ sum([x * x for x in totalcelldiagleftwon]) + sum([x * x for x in celldiagrightwon])+ sum([x * x for x in totalcelldiagrightwon])  ) / (17.0 * 16.0)
-        x23 = ( sum([x * x for x in celldiagleftlost])+ sum([x * x for x in totalcelldiagleftlost]) + sum([x * x for x in celldiagrightlost])+ sum([x * x for x in totalcelldiagrightlost])) / (17.0 * 16.0)
+        x22 = ( sum([x * x for x in celldiamond1won])+ sum([x * x for x in totalcelldiamond1won]) + sum([x * x for x in celldiamond2won])+ sum([x * x for x in totalcelldiamond2won]) ) / (17.0 * 16.0)
+        x23 = ( sum([x * x for x in celldiamond1lost])+ sum([x * x for x in totalcelldiamond1lost]) + sum([x * x for x in celldiamond2lost])+ sum([x * x for x in totalcelldiamond2lost])) / (17.0 * 16.0)
 
+        #print x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23
         return [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11,
                 x12, x13, x14, x15, x16,
                 x17, x18, x19, x20, x21, x22,
@@ -587,12 +667,20 @@ class Team47():
             block_stat[block_num] = currflag
             return block_stat
 
-        #diagonals
-        if board[currblock[0]][currblock[1]] == board[currblock[10]][currblock[11]] == board[currblock[20]][currblock[21]] == board[currblock[30]][currblock[31]] == currflag:
+        #diamond
+        if board[currblock[2]][currblock[3]] == board[currblock[8]][currblock[9]] == board[currblock[18]][currblock[19]] == board[currblock[12]][currblock[13]] == currflag:
             block_stat[block_num] = currflag
             return block_stat
 
-        if board[currblock[6]][currblock[7]] == board[currblock[12]][currblock[13]] == board[currblock[18]][currblock[19]] == board[currblock[24]][currblock[25]] == currflag:
+        if board[currblock[4]][currblock[5]] == board[currblock[10]][currblock[11]] == board[currblock[20]][currblock[21]] == board[currblock[14]][currblock[15]] == currflag:
+            block_stat[block_num] = currflag
+            return block_stat
+
+        if board[currblock[16]][currblock[17]] == board[currblock[10]][currblock[11]] == board[currblock[20]][currblock[21]] == board[currblock[26]][currblock[27]] == currflag:
+            block_stat[block_num] = currflag
+            return block_stat
+
+        if board[currblock[18]][currblock[19]] == board[currblock[12]][currblock[13]] == board[currblock[22]][currblock[23]] == board[currblock[28]][currblock[29]] == currflag:
             block_stat[block_num] = currflag
             return block_stat
 
